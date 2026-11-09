@@ -17,6 +17,7 @@ _KERNEL_TARGETS = [
     # keep sorted
     "aarch64_additional_kmi_symbol_lists",
     "all_headers_aarch64",
+    "fips140/fips140.ko",
     "include/uapi/drm/drm_fourcc.h",
     "include/uapi/sound/asound.h",
     "include/uapi/sound/compress_offload.h",

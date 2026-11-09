@@ -36,11 +36,15 @@ _STRIP = "//prebuilts/clang/host/linux-x86/clang-{}:bin/llvm-strip".format(VARS[
 
 hermetic_genrule(
     name = "fips140",
-    srcs = ["@gki_prebuilt_fips140//fips140.ko"],
+    # A source GKI can change the ABI of the separately shipped FIPS module.
+    srcs = select({
+        "//common:kernel_package_use_prebuilts": ["@gki_prebuilt_fips140//fips140.ko"],
+        "//conditions:default": ["//common:fips140/fips140.ko"],
+    }),
     outs = ["fips140.ko"],
     cmd = """
         $(location {strip}) --strip-debug -o $(location fips140.ko) \\
-                $(location @gki_prebuilt_fips140//fips140.ko)
+                $(SRCS)
     """.format(strip = _STRIP),
     tools = [_STRIP],
 )
